@@ -6,11 +6,11 @@ const seedFood = async () => {
   try {
     await connectDb();
     
-    // Clear existing food items
+    
     await foodModel.deleteMany({});
     console.log("Cleared existing food items");
 
-    // Seed food items
+    
     const foodItems = [
       {
         name: "Greek Salad",

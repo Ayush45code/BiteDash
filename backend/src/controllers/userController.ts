@@ -3,14 +3,12 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import type { Request, Response } from "express";
 
-const JWT_SECRET = "your_jwt_secret_key_here";
+const JWT_SECRET = process.env.JWT_SECRET!;
 
-// Register user
 const registerUser = async (req: Request, res: Response) => {
     try {
         const { name, email, password } = req.body;
 
-        // Check if user already exists
         const existingUser = await userModel.findOne({ email });
         if (existingUser) {
             return res.status(400).json({ 
@@ -19,7 +17,6 @@ const registerUser = async (req: Request, res: Response) => {
             });
         }
 
-        // Validate input
         if (!name || !email || !password) {
             return res.status(400).json({ 
                 success: false, 
@@ -34,10 +31,8 @@ const registerUser = async (req: Request, res: Response) => {
             });
         }
 
-        // Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Create new user
         const newUser = new userModel({
             name,
             email,
@@ -52,7 +47,6 @@ const registerUser = async (req: Request, res: Response) => {
         });
 
     } catch (error) {
-        console.error("Registration error:", error);
         res.status(500).json({ 
             success: false, 
             message: "Internal server error" 
@@ -60,12 +54,10 @@ const registerUser = async (req: Request, res: Response) => {
     }
 };
 
-// Login user
 const loginUser = async (req: Request, res: Response) => {
     try {
         const { email, password } = req.body;
 
-        // Validate input
         if (!email || !password) {
             return res.status(400).json({ 
                 success: false, 
@@ -73,7 +65,6 @@ const loginUser = async (req: Request, res: Response) => {
             });
         }
 
-        // Find user
         const user = await userModel.findOne({ email });
         if (!user) {
             return res.status(401).json({ 
@@ -82,7 +73,6 @@ const loginUser = async (req: Request, res: Response) => {
             });
         }
 
-        // Check password
         const isPasswordMatch = await bcrypt.compare(password, user.password);
         if (!isPasswordMatch) {
             return res.status(401).json({ 
@@ -91,7 +81,6 @@ const loginUser = async (req: Request, res: Response) => {
             });
         }
 
-        // Generate JWT token
         const token = jwt.sign(
             { userId: user._id, email: user.email },
             JWT_SECRET,
@@ -110,7 +99,6 @@ const loginUser = async (req: Request, res: Response) => {
         });
 
     } catch (error) {
-        console.error("Login error:", error);
         res.status(500).json({ 
             success: false, 
             message: "Internal server error" 

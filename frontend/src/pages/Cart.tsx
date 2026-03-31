@@ -22,11 +22,11 @@ export const Cart=()=>{
 
     return <div>
 
-        <div className="md:ml-40 gap-5 mx-5 md:mx-0 text-xs md:text-sm text-slate-600 grid grid-cols-6  md:gap-10 mt-5 md:mt-10">
-            <div>Items</div>
-            <div>Title</div>
+        <div className="md:ml-40 gap-5 mx-5 md:mx-0 text-xs md:text-sm text-slate-600 grid grid-cols-6 md:gap-10 mt-5 md:mt-10">
+            <div className="col-span-2 md:col-span-1">Items</div>
+            <div className="hidden md:block">Title</div>
             <div>Price</div>
-            <div>Quantity</div>
+            <div>Qty</div>
             <div>Total</div>
             <div>Remove</div>
 
@@ -36,14 +36,14 @@ export const Cart=()=>{
                        
             if(items?.[x._id] > 0 ){
                 return <>
-                    <div >
+                    <div className="col-span-2 md:col-span-1">
                           <img className=" w-10 h-10 md:w-10 md:h-10" src={x.image} alt="" />
 
                     </div>
                   
                   
 
-                    <div className="text-black">
+                    <div className="hidden md:block text-black">
                         {x.name}
 
                     </div>
@@ -122,7 +122,7 @@ export const Cart=()=>{
 
                 <button onClick={()=>{
                     navigate("/order")
-                }} className="rounded-md text-xs px-2 py-1 mt-1 md:text-sm md:py-1 md:px-3 md:mt-3 bg-orange-500 text-white transition-all duration-200 hover:scale-110">PROCEED TO CHECKOUT</button>
+                }} className="w-full md:w-auto rounded-md text-xs px-4 py-2 mt-4 md:mt-3 bg-orange-500 text-white transition-all duration-200 hover:bg-orange-600">PROCEED TO CHECKOUT</button>
 
             </div>
 

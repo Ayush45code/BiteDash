@@ -6,10 +6,7 @@ export const createOrder = async (req: Request, res: Response) => {
     try {
         const { items, customerName, customerEmail, customerAddress, customerPhone, paymentMethod } = req.body;
 
-        console.log("Creating order with data:", req.body);
-
         if (!items || items.length === 0) {
-            console.log("No items in order");
             return res.json({ success: false, message: "No items in order" });
         }
 
@@ -17,10 +14,8 @@ export const createOrder = async (req: Request, res: Response) => {
         const orderItems = [];
 
         for (const item of items) {
-            console.log("Looking up food item:", item.food);
             const food = await foodModel.findById(item.food);
             if (!food) {
-                console.log("Food item not found:", item.food);
                 return res.json({ success: false, message: `Food item not found: ${item.food}` });
             }
             
@@ -30,8 +25,6 @@ export const createOrder = async (req: Request, res: Response) => {
                 quantity: item.quantity
             });
         }
-
-        console.log("Creating order with items:", orderItems, "Total:", totalAmount);
 
         const order = await orderModel.create({
             items: orderItems,
@@ -43,27 +36,20 @@ export const createOrder = async (req: Request, res: Response) => {
             paymentMethod: paymentMethod || 'cod'
         });
 
-        console.log("Order created successfully:", order._id);
-
         res.json({ success: true, message: "Order created successfully", data: order });
     } catch (error) {
-        console.log("Error creating order:", error);
         res.json({ success: false, message: "Error creating order" });
     }
 };
 
 export const listOrders = async (req: Request, res: Response) => {
     try {
-        console.log("Fetching orders from database...");
         const orders = await orderModel.find({})
             .populate('items.food', 'name description price image category')
             .sort({ createdAt: -1 });
         
-        console.log(`Found ${orders.length} orders`);
-        
         res.json({ success: true, data: orders });
     } catch (error) {
-        console.log("Error fetching orders:", error);
         res.json({ success: false, message: "Error fetching orders" });
     }
 };
@@ -88,7 +74,6 @@ export const updateOrderStatus = async (req: Request, res: Response) => {
 
         res.json({ success: true, message: "Order status updated", data: order });
     } catch (error) {
-        console.log("Error updating order status:", error);
         res.json({ success: false, message: "Error updating order status" });
     }
 };
@@ -109,7 +94,6 @@ export const deleteOrder = async (req: Request, res: Response) => {
 
         res.json({ success: true, message: "Order deleted successfully" });
     } catch (error) {
-        console.log("Error deleting order:", error);
         res.json({ success: false, message: "Error deleting order" });
     }
 };

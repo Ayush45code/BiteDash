@@ -18,11 +18,8 @@ export const Orders = () => {
 
   const fetchOrders = async () => {
     try {
-      console.log("Fetching orders from admin...");
       const response = await orderAPI.listOrders();
-      console.log("Orders response:", response);
       if (response.success) {
-        console.log(`Found ${response.data.length} orders`);
         const formattedOrders = response.data.map((order: any) => ({
           _id: order._id,
           items: order.items.map((item: any) => ({
@@ -40,14 +37,12 @@ export const Orders = () => {
           customerEmail: order.customerEmail,
           createdAt: order.createdAt
         }));
-        console.log("Formatted orders:", formattedOrders);
         setOrders(formattedOrders);
       } else {
         toast.error("Failed to fetch orders");
       }
     } catch (error) {
       toast.error("Error fetching orders");
-      console.error("Error:", error);
     } finally {
       setLoading(false);
     }
@@ -93,9 +88,9 @@ export const Orders = () => {
   }
 
   return (
-    <div className="flex-1 p-8">
+    <div className="flex-1 p-4 md:p-8">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-800 mb-4">Orders</h1>
+        <h1 className="text-xl md:text-2xl font-bold text-gray-800 mb-4">Orders</h1>
         
         {loading ? (
           <div className="text-center py-8">
@@ -103,7 +98,6 @@ export const Orders = () => {
           </div>
         ) : (
           <>
-            {/* Status Filter */}
             <div className="mb-6">
           <select
             value={selectedStatus}
@@ -118,8 +112,8 @@ export const Orders = () => {
           </select>
         </div>
 
-        {/* Orders Table */}
-        <div className="bg-white rounded-lg shadow overflow-hidden">
+        {/* Desktop Table */}
+        <div className="hidden md:block bg-white rounded-lg shadow overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="bg-gray-50 border-b">
@@ -182,13 +176,55 @@ export const Orders = () => {
               </tbody>
             </table>
           </div>
+        </div>
+
+        {/* Mobile Cards */}
+        <div className="md:hidden space-y-4">
+          {filteredOrders.map((order) => (
+            <div key={order._id} className="bg-white rounded-lg shadow p-4">
+              <div className="flex justify-between items-start mb-3">
+                <div>
+                  <span className="text-xs text-gray-500">Order #{order._id.slice(-6)}</span>
+                  <div className="text-sm font-medium text-gray-900">{order.customerName}</div>
+                  <div className="text-xs text-gray-500">{order.customerEmail}</div>
+                </div>
+                <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(order.status)}`}>
+                  {order.status}
+                </span>
+              </div>
+              
+              <div className="text-sm text-gray-900 mb-1">
+                {order.items.length} item{order.items.length > 1 ? 's' : ''}
+              </div>
+              <div className="text-xs text-gray-500 mb-3">
+                {order.items.slice(0, 2).map(item => item.name).join(', ')}
+                {order.items.length > 2 && ` +${order.items.length - 2} more`}
+              </div>
+              
+              <div className="flex justify-between items-center mb-3">
+                <span className="text-lg font-bold text-gray-900">${order.totalAmount}</span>
+                <span className="text-xs text-gray-500">{formatDate(order.createdAt)}</span>
+              </div>
+              
+              <select
+                value={order.status}
+                onChange={(e) => updateOrderStatus(order._id, e.target.value as Order['status'])}
+                className="w-full text-sm border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white"
+              >
+                <option value="pending">Pending</option>
+                <option value="processing">Processing</option>
+                <option value="completed">Completed</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+            </div>
+          ))}
+        </div>
           
           {filteredOrders.length === 0 && (
             <div className="text-center py-8 text-gray-500">
               No orders found with status: {selectedStatus}
             </div>
           )}
-        </div>
           </>
         )}
       </div>
