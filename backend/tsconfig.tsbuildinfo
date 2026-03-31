@@ -1,0 +1,1 @@
+{"root":["./src/index.ts","./src/seed.ts","./src/config/db.ts","./src/controllers/foodcontroller.ts","./src/controllers/ordercontroller.ts","./src/controllers/usercontroller.ts","./src/models/foodmodel.ts","./src/models/ordermodel.ts","./src/models/usermodel.ts","./src/routes/foodroute.ts","./src/routes/orderroute.ts","./src/routes/userroute.ts"],"version":"5.9.3"}
