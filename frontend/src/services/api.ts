@@ -39,19 +39,19 @@ export const getImageUrl = (imageUrl: string) => {
   if (imageUrl.includes('cloudinary.com')) {
     return imageUrl;
   }
-  // If it's an old localhost URL, extract just the filename
-  if (imageUrl.includes('localhost:3000/images/')) {
+  // If it's an old localhost URL, convert to use proper backend URL
+  if (imageUrl.includes('localhost')) {
     const filename = imageUrl.split('/').pop();
     if (filename) {
       const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
       return `${baseUrl.replace('/api', '')}/images/${filename}`;
     }
   }
-  // If it's already a full URL (other), return as-is
+  // If it's already a full URL (other https), return as-is
   if (imageUrl.startsWith('http')) {
     return imageUrl;
   }
-  // Fallback for old local images (just filename)
+  // Fallback for old local images (just filename like "food_2.jpg")
   const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
   return `${baseUrl.replace('/api', '')}/images/${imageUrl}`;
 };
