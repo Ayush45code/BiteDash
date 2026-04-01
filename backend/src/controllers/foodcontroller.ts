@@ -42,14 +42,17 @@ export const listFood=async(req:Request,res:Response)=>{
     try{
         const foods=await foodModel.find({});
         
-        // Convert old localhost URLs to use proper backend URL
+        // Convert old localhost URLs and filenames to use proper backend URL
         const baseUrl = process.env.BACKEND_URL || 'https://bitedash-backend-v48h.onrender.com';
         const formattedFoods = foods.map(food => {
             let imageUrl = food.image;
-            // If image contains localhost, convert to proper URL
+            // If image contains localhost, extract filename
             if (imageUrl.includes('localhost')) {
-                const filename = imageUrl.split('/').pop();
-                imageUrl = `${baseUrl}/images/${filename}`;
+                imageUrl = imageUrl.split('/').pop() || imageUrl;
+            }
+            // If image is just a filename (no http), add base URL
+            if (!imageUrl.startsWith('http')) {
+                imageUrl = `${baseUrl}/images/${imageUrl}`;
             }
             return {
                 ...food.toObject(),
