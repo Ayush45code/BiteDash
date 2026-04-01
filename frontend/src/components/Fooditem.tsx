@@ -3,6 +3,7 @@ import { Minus } from "../Icons/Minus"
 import { Plus } from "../Icons/Plus"
 import { Star } from "../Icons/Rating"
 import type { FoodItem } from "./FoodDisplay"
+import { getImageUrl } from "../services/api.ts"
 
 import { useContext } from "react"
 
@@ -21,7 +22,7 @@ export const Fooditem=({item}:Fooditemprops)=>{
 
     return <div className="border-2 rounded-xl shadow-lg hover:scale-110 duration-200 transition-all cursor-pointer">
         <div className="flex justify-center relative">
-            <img src={item.image} alt="" className="md:w-80 w-20 h-20 md:h-60 rounded-full md:rounded-xl"/>
+            <img src={getImageUrl(item.image)} alt="" className="md:w-80 w-20 h-20 md:h-60 rounded-full md:rounded-xl"/>
             <div className="absolute bottom-0 right-0 md:bottom-1 md:right-1">
             {(!context.items[item._id] || context.items[item._id]===0 )  && <div  className="bg-white rounded-full cursor-pointer" onClick={()=>{context.addtocard(item._id)}}> <Plus/></div>}
             
