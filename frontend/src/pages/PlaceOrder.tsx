@@ -1,4 +1,4 @@
-import { useContext, useState } from "react"
+import { useContext, useState, useEffect } from "react"
 import { StoreContext } from "../Context/context"
 import { orderAPI } from "../services/api"
 import { useNavigate } from "react-router-dom"
@@ -17,6 +17,15 @@ export const PlaceOrder=()=>{
     const [country, setCountry] = useState("");
     const [phone, setPhone] = useState("");
     const navigate = useNavigate();
+
+    // Get logged-in user's email
+    useEffect(() => {
+        const storedUser = localStorage.getItem("user");
+        if (storedUser) {
+            const user = JSON.parse(storedUser);
+            setEmail(user.email);
+        }
+    }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -86,12 +95,11 @@ export const PlaceOrder=()=>{
     </div>
 
     <input 
-      className="w-full border-2 p-2 text-sm rounded" 
+      className="w-full border-2 p-2 text-sm rounded bg-gray-100" 
       type="email" 
       placeholder="Email address"
       value={email}
-      onChange={(e) => setEmail(e.target.value)}
-      required
+      readOnly
     />
 
     <input 
