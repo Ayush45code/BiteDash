@@ -34,7 +34,12 @@ export const userAPI = {
   },
 };
 
-export const getImageUrl = (imageName: string) => {
+export const getImageUrl = (imageUrl: string) => {
+  // If it's already a full URL (Cloudinary), return as-is
+  if (imageUrl.startsWith('http')) {
+    return imageUrl;
+  }
+  // Fallback for old local images
   const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
-  return `${baseUrl.replace('/api', '')}/images/${imageName}`;
+  return `${baseUrl.replace('/api', '')}/images/${imageUrl}`;
 };
