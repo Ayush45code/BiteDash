@@ -2,6 +2,7 @@ import { useContext } from "react"
 import { StoreContext } from "../Context/context"
 import { Cross } from "../Icons/Cross"
 import { useNavigate } from "react-router-dom"
+import { getImageUrl } from "../services/api.ts"
 
 export const Cart=()=>{
  
@@ -37,7 +38,7 @@ export const Cart=()=>{
             if(items?.[x._id] > 0 ){
                 return <>
                     <div className="col-span-2 md:col-span-1">
-                          <img className=" w-10 h-10 md:w-10 md:h-10" src={x.image} alt="" />
+                          <img className=" w-10 h-10 md:w-10 md:h-10" src={getImageUrl(x.image)} alt="" />
 
                     </div>
                   
