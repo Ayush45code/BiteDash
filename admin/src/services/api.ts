@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+const API_BASE_URL = 'https://bitedash-backend-v48h.onrender.com/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -53,6 +53,6 @@ export const getImageUrl = (imageUrl: string) => {
     return imageUrl;
   }
   // Fallback for old local images
-  const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
-  return `${baseUrl.replace('/api', '')}/images/${imageUrl}`;
+  const baseUrl = 'https://bitedash-backend-v48h.onrender.com';
+  return `${baseUrl}/images/${imageUrl}`;
 };
