@@ -35,11 +35,23 @@ export const userAPI = {
 };
 
 export const getImageUrl = (imageUrl: string) => {
-  // If it's already a full URL (Cloudinary), return as-is
+  // If it's a Cloudinary URL, return as-is
+  if (imageUrl.includes('cloudinary.com')) {
+    return imageUrl;
+  }
+  // If it's an old localhost URL, extract just the filename
+  if (imageUrl.includes('localhost:3000/images/')) {
+    const filename = imageUrl.split('/').pop();
+    if (filename) {
+      const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+      return `${baseUrl.replace('/api', '')}/images/${filename}`;
+    }
+  }
+  // If it's already a full URL (other), return as-is
   if (imageUrl.startsWith('http')) {
     return imageUrl;
   }
-  // Fallback for old local images
+  // Fallback for old local images (just filename)
   const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
   return `${baseUrl.replace('/api', '')}/images/${imageUrl}`;
 };
