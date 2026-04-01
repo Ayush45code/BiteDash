@@ -1,12 +1,16 @@
 import express from "express"
 import cors from "cors"
+import dotenv from "dotenv"
 import { connectDb } from "./config/db.js"
 import type{ Request,Response } from "express"
 import { foodRouter } from "./routes/foodRoute.js"
 import orderRouter from "./routes/orderRoute.js"
 import userRouter from "./routes/userRoute.js"
 
+dotenv.config();
+
 const app=express()
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json())
 
@@ -26,7 +30,6 @@ app.get("/",(req:Request,res:Response)=>{
     res.send("hey");
 })
 
-app.listen(3000,()=>{
-    console.log( "server listening at 3000!")
-   
+app.listen(PORT,()=>{
+    console.log(`server listening at ${PORT}!`)
 })
