@@ -63,8 +63,10 @@ type ChildProps = {
                 
                <Link to='/cart'>
                  <div className="flex items-baseline md:pb-2 cursor-pointer" >{total!=0 && <div className=" text-orange-500 md:text-4xl mt-0 ">.</div>}<Bag/></div>
+               </Link>
 
-               
+               <Link to='/my-orders'>
+                 <div className="cursor-pointer hover:bg-slate-200 md:rounded-xl md:px-3 md:py-0 text-sm font-medium">My Orders</div>
                </Link>
               
 

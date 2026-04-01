@@ -3,6 +3,7 @@ import { Routes,Route } from "react-router-dom";
 import { Home } from "./pages/Home";
 import { Cart } from "./pages/Cart";
 import { PlaceOrder } from "./pages/PlaceOrder";
+import { MyOrders } from "./pages/MyOrders";
 import Footer from "./components/Footer";
 import { useState, useEffect } from "react";
 import { Sign } from "./Sign_here/Sign";
@@ -41,6 +42,7 @@ import { StoreContextProvider } from "./Context/context";
         <Route element={<Home/>} path="/" ></Route>
         <Route element={<Cart/>} path="/cart"></Route>
         <Route element={<PlaceOrder/>} path="/order"></Route>
+        <Route element={<MyOrders/>} path="/my-orders"></Route>
 
 
       </Routes>
